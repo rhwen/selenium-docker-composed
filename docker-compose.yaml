@@ -1,0 +1,31 @@
+version: '2'
+services:
+  selenium-hub:
+    image: selenium/hub:3.5.3-astatine
+    container_name: selenium-hub 
+    ports:
+      - 4444:4444
+    networks:
+      - grid-network1
+
+  selenium-node1:
+    image: selenium/node-chrome:3.5.3-astatine
+    container_name: selenium-node1
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=selenium-hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    networks:
+      - grid-network1
+
+  selenium-node2:
+    image: selenium/node-firefox:3.5.3-astatine
+    container_name: selenium-node2
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=selenium-hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    networks:
+      - grid-network1
+
+networks:
+  grid-network1:
+    driver: bridge
